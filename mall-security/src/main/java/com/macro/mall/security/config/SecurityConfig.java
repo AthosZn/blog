@@ -43,6 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
+                //在用了spring security 的后 必须开启这个才能使用cors
+                .and().cors()
                 // 关闭跨站请求防护及不使用session
                 .and()
                 .csrf()
