@@ -22,4 +22,6 @@ public interface UserService {
     Long updateUser(User user);
 
     void deleteUserById(Long id);
+
+    User findByAcountAndMobilePhoneNumber(String account,String mobilePhoneNumber);
 }

@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Created by macro on 2019/9/30.
@@ -43,5 +44,24 @@ public class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
                         adminContextPath + "/instances",
                         adminContextPath + "/actuator/**"
                 );
+
+        //定制退出
+        http.logout()
+                //.logoutUrl("/sys/doLogout")  //只支持定制退出url
+                //支持定制退出url以及httpmethod
+                .logoutRequestMatcher(new AntPathRequestMatcher("/sso/logout", "GET"))
+                .addLogoutHandler((request,response,authentication) -> System.out.println("=====1====="))
+                .addLogoutHandler((request,response,authentication) -> System.out.println("=====2======"))
+                .addLogoutHandler((request,response,authentication) -> System.out.println("=====3======"))
+                .logoutSuccessHandler(((request, response, authentication) -> {
+                    System.out.println("=====4=======");
+                    response.sendRedirect("/html/logoutsuccess1.html");
+                }))
+                //.logoutSuccessUrl("/html/logoutsuccess2.html")  //成功退出的时候跳转的页面
+                //.deleteCookies()  //底层也是使用Handler实现的额
+                //清除认证信息
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+        ;
     }
 }

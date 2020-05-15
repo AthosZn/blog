@@ -1,19 +1,17 @@
 package com.shimh.service.impl;
 
 import com.macro.mall.common.exception.Asserts;
-import com.macro.mall.mapper.UmsMemberLevelMapper;
 import com.macro.mall.mapper.UmsMemberMapper;
 import com.macro.mall.model.UmsMember;
 import com.macro.mall.model.UmsMemberExample;
-import com.macro.mall.model.UmsMemberLevel;
-import com.macro.mall.model.UmsMemberLevelExample;
 import com.macro.mall.security.util.JwtTokenUtil;
 import com.shimh.common.constant.ResultCode;
-import com.shimh.common.result.Result;
-import com.shimh.entity.MemberDetails;
+import com.shimh.common.util.PasswordHelper;
 import com.shimh.entity.User;
+import com.shimh.entity.UserStatus;
 import com.shimh.service.RedisService;
 import com.shimh.service.UmsMemberService;
+import com.shimh.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,12 +41,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UmsMemberServiceImpl.class);
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UmsMemberMapper memberMapper;
+
     @Autowired
-    private UmsMemberLevelMapper memberLevelMapper;
+    private UserService userService;
+
+
     @Autowired
     private RedisService redisService;
     @Value("${redis.key.prefix.authCode}")
@@ -57,54 +58,58 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     @Value("${redis.key.expire.authCode}")
     private Long AUTH_CODE_EXPIRE_SECONDS;
 
+
     @Override
-    public UmsMember getByUsername(String username) {
-        UmsMemberExample example = new UmsMemberExample();
-        example.createCriteria().andUsernameEqualTo(username);
-        List<UmsMember> memberList = memberMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(memberList)) {
-            return memberList.get(0);
+    public User loadUserByUsername(String username) {
+        User user = getByUsername(username);
+        if(user!=null){
+            return user;
         }
-        return null;
+        throw new UsernameNotFoundException("用户名或密码错误");
+    }
+
+
+    @Override
+    public User getByUsername(String username) {
+        return userService.getUserByAccount(username);
     }
 
     @Override
-    public UmsMember getById(Long id) {
-        return memberMapper.selectByPrimaryKey(id);
+    public User getById(Long id) {
+        return userService.getUserById(id);
     }
 
     @Override
-    public Result register(String username, String password, String telephone, String authCode) {
+    public String register(String username, String password, String telephone, String authCode) {
         //验证验证码
 //        if(!verifyAuthCode(authCode,telephone)){
 //            Asserts.fail("验证码错误");
 //        }
         //查询是否已有该用户
-        UmsMemberExample example = new UmsMemberExample();
-        example.createCriteria().andUsernameEqualTo(username);
-        example.or(example.createCriteria().andPhoneEqualTo(telephone));
-        List<UmsMember> umsMembers = memberMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(umsMembers)) {
-            return Result.error(ResultCode.USER_HAS_EXISTED);
+//        UmsMemberExample example = new UmsMemberExample();
+//        example.createCriteria().andUsernameEqualTo(username);
+//        example.or(example.createCriteria().andPhoneEqualTo(telephone));
+//        List<UmsMember> umsMembers = memberMapper.selectByExample(example);
+        User user= userService.findByAcountAndMobilePhoneNumber(username,telephone);
+        if (null!=user) {
+            throw new BadCredentialsException(ResultCode.USER_HAS_EXISTED.message());
 //            Asserts.fail("该用户已经存在");
         }
         //没有该用户进行添加操作
-        UmsMember umsMember = new UmsMember();
-        umsMember.setUsername(username);
-        umsMember.setPhone(telephone);
-        umsMember.setPassword(passwordEncoder.encode(password));
-        umsMember.setCreateTime(new Date());
-        umsMember.setStatus(1);
-        //获取默认会员等级并设置
-        UmsMemberLevelExample levelExample = new UmsMemberLevelExample();
-        levelExample.createCriteria().andDefaultStatusEqualTo(1);
-        List<UmsMemberLevel> memberLevelList = memberLevelMapper.selectByExample(levelExample);
-        if (!CollectionUtils.isEmpty(memberLevelList)) {
-            umsMember.setMemberLevelId(memberLevelList.get(0).getId());
-        }
-        memberMapper.insert(umsMember);
-        umsMember.setPassword(null);
-        return  new Result();
+        User umsMember = new User();
+        umsMember.setAccount(username);
+        umsMember.setNickname(username);
+        umsMember.setMobilePhoneNumber(telephone);
+//        umsMember.setPassword(passwordEncoder.encode(password));
+        umsMember.setPassword(password);
+        umsMember.setCreateDate(new Date());
+        umsMember.setStatus(UserStatus.normal);
+        userService.saveUser(umsMember);
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(umsMember, null, umsMember.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenUtil.generateToken(umsMember);
+        return token;
     }
 
     @Override
@@ -141,12 +146,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     public User getCurrentMember() {
         SecurityContext ctx = SecurityContextHolder.getContext();
         Authentication auth = ctx.getAuthentication();
-        MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
-        User user=new User();
-        user.setAccount(memberDetails.getUsername());
-        user.setPassword(memberDetails.getPassword());
-        user.setId(memberDetails.getUmsMember().getId());
-        user.setMobilePhoneNumber(memberDetails.getUmsMember().getPhone());
+        User user = (User) auth.getPrincipal();
         return user;
     }
 
@@ -167,24 +167,20 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        UmsMember member = getByUsername(username);
-        if(member!=null){
-            return new MemberDetails(member);
-        }
-        throw new UsernameNotFoundException("用户名或密码错误");
-    }
-
-    @Override
     public String login(String username, String password) {
         String token = null;
         //密码需要客户端加密后传递
         try {
-            UserDetails userDetails = loadUserByUsername(username);
-            if(!passwordEncoder.matches(password,userDetails.getPassword())){
+            User userDetails = loadUserByUsername(username);
+            password= PasswordHelper.encryptPassword(password,userDetails.getSalt());
+//            if(!passwordEncoder.matches(password,userDetails.getPassword())){
+//                throw new BadCredentialsException("密码不正确");
+//            }
+            if(!password.equals(userDetails.getPassword())){
                 throw new BadCredentialsException("密码不正确");
             }
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//            this.passwordEncoder.matches(userDetails.getPassword(), userDetails.getPassword(),null)
             SecurityContextHolder.getContext().setAuthentication(authentication);
             token = jwtTokenUtil.generateToken(userDetails);
         } catch (AuthenticationException e) {

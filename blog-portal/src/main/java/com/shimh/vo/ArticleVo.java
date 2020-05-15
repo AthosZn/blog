@@ -1,7 +1,6 @@
 package com.shimh.vo;
 
 import com.shimh.entity.Article;
-
 public class ArticleVo extends Article {
 
     private Integer year;

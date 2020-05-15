@@ -23,7 +23,7 @@ public class RegisterParam implements Serializable {
 
     private String nickname;
 
-    private String mobilePhoneNumber;
+    private String telephone;
 
     private String authCode;
 

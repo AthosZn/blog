@@ -1,10 +1,9 @@
 package com.shimh.common.controlleradvice;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.macro.mall.common.exception.ApiException;
+import com.shimh.common.constant.ResultCode;
+import com.shimh.common.result.ParameterInvalidItem;
+import com.shimh.common.result.Result;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.slf4j.Logger;
@@ -17,10 +16,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.shimh.common.constant.ResultCode;
-import com.shimh.common.exception.BaseException;
-import com.shimh.common.result.ParameterInvalidItem;
-import com.shimh.common.result.Result;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 全局异常处理器
@@ -84,6 +82,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Result> ExceptionHandler(HttpServletRequest request, Exception e) {
+
+        logger.error("服务器内部错误 , uri: {} , caused by: ", request.getRequestURI(), e);
+
+        HttpStatus status = getStatus(request);
+        Result r = new Result();
+        r.setResultCode(ResultCode.SYSTEM_INNER_ERROR);
+
+        r.simple().put("errdetail", e.getMessage());
+
+        return new ResponseEntity<Result>(r, status);
+    }
+
+
+    @ExceptionHandler(ApiException.class)
+    ResponseEntity<Result> ApiExceptionHandler(HttpServletRequest request, ApiException e) {
 
         logger.error("服务器内部错误 , uri: {} , caused by: ", request.getRequestURI(), e);
 

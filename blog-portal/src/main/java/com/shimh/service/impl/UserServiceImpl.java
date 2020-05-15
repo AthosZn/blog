@@ -65,4 +65,9 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public User findByAcountAndMobilePhoneNumber(String account,String mobilePhoneNumber){
+        return userRepository.findByAccountAndMobilePhoneNumber(account,mobilePhoneNumber);
+    }
+
 }

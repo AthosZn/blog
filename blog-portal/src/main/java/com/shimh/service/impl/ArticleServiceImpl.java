@@ -70,7 +70,6 @@ public class ArticleServiceImpl implements ArticleService {
     public Integer saveArticle(Article article) {
 
         User currentUser = UserUtils.getCurrentUser();
-        User ttt= umsMemberService.getCurrentMember();
         if (null != currentUser) {
             article.setAuthor(currentUser);
         }

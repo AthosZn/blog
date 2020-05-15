@@ -1,11 +1,11 @@
 package com.shimh.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.shimh.common.entity.BaseEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.shimh.common.entity.BaseEntity;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * 文章标签
@@ -16,6 +16,7 @@ import com.shimh.common.entity.BaseEntity;
  */
 @Entity
 @Table(name = "me_tag")
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class Tag extends BaseEntity<Integer> {
 
     /**

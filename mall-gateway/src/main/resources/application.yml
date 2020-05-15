@@ -1,12 +1,43 @@
 server:
   port: 8201
 spring:
+  redis:
+    host: localhost
+    port: 6379
   application:
     name: mall-gateway
   profiles:
     active: dev
   cloud:
     gateway:
+      routes:
+        - id: host_route
+          uri: http://baidu.com
+          predicates:
+            - Host=**.baidu.com
+        - id: path_route
+          uri: https://www.jd.com/
+          predicates:
+            - Path= /consumer/**
+        - id: hystrix_route  #Hystrix 过滤器允许你将断路器功能添加到网关路由中，使你的服务免受级联故障的影响，并提供服务降级处理。
+          uri: http://localhost:8201
+          predicates:
+            - Method=GET
+          filters:
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
+        - id: requestratelimiter_route #我们使用Redis来进行限流，所以需要添加Redis和RequestRateLimiter的配置，这里对所有的GET请求都进行了按IP来限流的操作
+            uri: http://localhost:8201
+            filters:
+              - name: RequestRateLimiter
+                args:
+                  redis-rate-limiter.replenishRate: 1 #每秒允许处理的请求数量
+                  redis-rate-limiter.burstCapacity: 2 #每秒最大处理的请求数量
+                  key-resolver: "#{@ipKeyResolver}" #限流策略，对应策略的Bean
+            predicates:
+              - Method=GET
       discovery:
         locator:
           enabled: true

@@ -1,14 +1,14 @@
 package com.shimh.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.shimh.common.entity.BaseEntity;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-
-import com.shimh.common.entity.BaseEntity;
 
 /**
  * 文章内容
@@ -19,6 +19,7 @@ import com.shimh.common.entity.BaseEntity;
  */
 @Entity
 @Table(name = "me_article_body")
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class ArticleBody extends BaseEntity<Long> {
 
     /**

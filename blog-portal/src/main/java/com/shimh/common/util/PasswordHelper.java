@@ -36,5 +36,14 @@ public class PasswordHelper {
         user.setPassword(newPassword);
     }
 
+    public static String encryptPassword(String password,String salt) {
+        String newPassword = new SimpleHash(
+                algorithmName,
+                password,
+                salt,
+                hashIterations).toHex();
+        return newPassword;
+    }
+
 
 }

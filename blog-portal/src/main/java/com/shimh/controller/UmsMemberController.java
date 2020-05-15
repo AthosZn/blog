@@ -1,6 +1,7 @@
 package com.shimh.controller;
 
 import com.macro.mall.common.api.CommonResult;
+import com.shimh.common.annotation.LogAnnotation;
 import com.shimh.common.constant.ResultCode;
 import com.shimh.common.result.Result;
 import com.shimh.entity.User;
@@ -41,8 +42,17 @@ public class UmsMemberController {
     @ResponseBody
     public Result register(@RequestBody RegisterParam param
                                  ) {
-        Result r =  memberService.register(param.getAccount(), param.getPassword(),
-                param.getMobilePhoneNumber(), param.getAuthCode());
+        Result r = new Result();
+        String token =  memberService.register(param.getAccount(), param.getPassword(),
+                param.getTelephone(), param.getAuthCode());
+        if (token == null) {
+            r.setResultCode(ResultCode.USER_LOGIN_ERROR);
+            return r;
+        }
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        r.setData(tokenMap);
         return r;
     }
 
@@ -97,4 +107,14 @@ public class UmsMemberController {
         tokenMap.put("tokenHead", tokenHead);
         return CommonResult.success(tokenMap);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @LogAnnotation(module = "退出", operation = "退出")
+    @ResponseBody
+    public Result logout() {
+        Result r = new Result();
+        r.setResultCode(ResultCode.SUCCESS);
+        return r;
+    }
+
 }

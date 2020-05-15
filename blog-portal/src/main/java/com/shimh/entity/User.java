@@ -2,8 +2,11 @@ package com.shimh.entity;
 
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shimh.common.entity.BaseEntity;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +15,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -23,7 +28,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "sys_user")
-public class User extends BaseEntity<Long> {
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
+public class User  extends BaseEntity<Long> implements UserDetails {
 
     /**
      *
@@ -38,7 +44,7 @@ public class User extends BaseEntity<Long> {
     /**
      * 使用md5(username + original password + salt)加密存储
      */
-    @NotBlank
+    @NotEmpty
     @Column(name = "password", length = 64)
     private String password;
 
@@ -137,8 +143,38 @@ public class User extends BaseEntity<Long> {
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return account;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

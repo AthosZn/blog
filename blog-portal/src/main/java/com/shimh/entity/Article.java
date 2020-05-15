@@ -1,6 +1,7 @@
 package com.shimh.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.shimh.common.entity.BaseEntity;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -29,6 +30,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "me_article")
+@JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class Article extends BaseEntity<Integer> {
 
     public static final int Article_TOP = 1;

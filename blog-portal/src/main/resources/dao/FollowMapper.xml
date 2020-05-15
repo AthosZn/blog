@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shimh.dao.FollowDao" >
+  <resultMap id="BaseResultMap" type="com.shimh.entity.relation.Follow" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+    <result column="follow_uid" property="followUid" jdbcType="BIGINT" />
+    <result column="relation_type" property="relationType" jdbcType="BIT" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, `uid`, follow_uid, relation_type, created_time, updated_time
+  </sql>
+
+  <select id="selectByUid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where  `uid`=#{uid,jdbcType=BIGINT}
+    and relation_type in (1,2)
+  </select>
+
+  <select id="getFollowCount" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+    select count(1)  from follow
+    where  `uid`=#{uid,jdbcType=BIGINT}
+    and relation_type in (1,2)
+  </select>
+
+  <select id="selectFollowByPages" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where  `uid`=#{uid,jdbcType=BIGINT}
+    and relation_type in (1,2)
+    order by created_time DESC,id DESC
+    limit #{breakPoint,jdbcType=INTEGER},#{count,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByFollow" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where  `follow_uid`=#{followUid,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUidAndFollowUid" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where  `uid`=#{uid,jdbcType=BIGINT}
+    and `follow_uid`=#{followUid,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insert" parameterType="com.shimh.entity.relation.Follow" >
+    insert into follow ( `uid`, follow_uid,
+      relation_type, created_time, updated_time
+      )
+    values ( #{uid,jdbcType=BIGINT}, #{followUid,jdbcType=BIGINT},
+      #{relationType,jdbcType=BIT}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+  <update id="update" parameterType="com.shimh.entity.relation.Follow">
+    update follow
+    set
+    `uid` = #{uid,jdbcType=BIGINT},
+    follow_uid = #{followUid,jdbcType=BIGINT},
+    relation_type = #{relationType,jdbcType=BIT},
+    updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+     where  `id`=#{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectFriendByUid" resultMap="BaseResultMap" parameterType="java.lang.Long"  >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where  `uid`=#{uid,jdbcType=BIGINT}
+    and relation_type=2
+  </select>
+
+
+
+  <select id="selectByFollowUids" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from follow
+    where
+    uid = #{uid,jdbcType=BIGINT} and
+     follow_uid in
+    <foreach item="item" index="index" collection="followUids" open="(" separator="," close=")">
+      #{item,jdbcType=INTEGER}
+    </foreach>
+    and relation_type in (1,2)
+  </select>
+
+</mapper>

@@ -27,6 +27,7 @@ secure:
       - /**/*.js
       - /**/*.css
       - /**/*.png
+      - /**/*.jpg
       - /**/*.ico
       - /webjars/springfox-swagger-ui/**
       - /druid/**

@@ -1,9 +1,6 @@
 package com.shimh.service;
 
-import com.macro.mall.model.UmsMember;
-import com.shimh.common.result.Result;
 import com.shimh.entity.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -14,18 +11,18 @@ public interface UmsMemberService {
     /**
      * 根据用户名获取会员
      */
-    UmsMember getByUsername(String username);
+    User getByUsername(String username);
 
     /**
      * 根据会员编号获取会员
      */
-    UmsMember getById(Long id);
+    User getById(Long id);
 
     /**
      * 用户注册
      */
     @Transactional
-    Result register(String username, String password, String telephone, String authCode);
+    String register(String username, String password, String telephone, String authCode);
 
     /**
      * 生成验证码
@@ -52,7 +49,7 @@ public interface UmsMemberService {
     /**
      * 获取用户信息
      */
-    UserDetails loadUserByUsername(String username);
+    User loadUserByUsername(String username);
 
     /**
      * 登录后获取token
