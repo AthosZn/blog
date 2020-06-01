@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 任何请求需要身份认证
         registry.and()
                 .authorizeRequests()
+                .antMatchers("/check_token").permitAll()
                 .anyRequest()
                 .authenticated()
                 //在用了spring security 的后 必须开启这个才能使用cors

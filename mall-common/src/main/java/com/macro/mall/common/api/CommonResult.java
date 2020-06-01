@@ -88,14 +88,14 @@ public class CommonResult<T> {
      * 未登录返回结果
      */
     public static <T> CommonResult<T> unauthorized(T data) {
-        return new CommonResult<T>(ResultCode.UNAUTHORIZED.getCode(), ResultCode.UNAUTHORIZED.getMessage(), data);
+        return new CommonResult<T>(ResultCode.USER_NOT_LOGGED_IN.getCode(), ResultCode.USER_NOT_LOGGED_IN.getMessage(), data);
     }
 
     /**
      * 未授权返回结果
      */
     public static <T> CommonResult<T> forbidden(T data) {
-        return new CommonResult<T>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMessage(), data);
+        return new CommonResult<T>(ResultCode.PERMISSION_NO_ACCESS.getCode(), ResultCode.PERMISSION_NO_ACCESS.getMessage(), data);
     }
 
     public long getCode() {

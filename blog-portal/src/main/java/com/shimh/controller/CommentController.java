@@ -1,12 +1,14 @@
 package com.shimh.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
+import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
+import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
+import com.shimh.common.result.Result;
+import com.shimh.entity.Comment;
+import com.shimh.entity.User;
+import com.shimh.service.CommentService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,16 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
-import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
-import com.shimh.common.constant.Base;
-import com.shimh.common.constant.ResultCode;
-import com.shimh.common.result.Result;
-import com.shimh.entity.Article;
-import com.shimh.entity.Comment;
-import com.shimh.entity.Tag;
-import com.shimh.entity.User;
-import com.shimh.service.CommentService;
+import java.util.List;
 
 /**
  * 评论api

@@ -1,14 +1,8 @@
 package com.shimh.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
+import com.shimh.common.result.Result;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.shimh.common.constant.ResultCode;
-import com.shimh.common.result.Result;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 @RestController
 public class UploadController {

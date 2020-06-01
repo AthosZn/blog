@@ -1,11 +1,11 @@
 package com.shimh.service.impl;
 
+import com.macro.mall.common.api.ResultCode;
 import com.macro.mall.common.exception.Asserts;
 import com.macro.mall.mapper.UmsMemberMapper;
 import com.macro.mall.model.UmsMember;
 import com.macro.mall.model.UmsMemberExample;
 import com.macro.mall.security.util.JwtTokenUtil;
-import com.shimh.common.constant.ResultCode;
 import com.shimh.common.util.PasswordHelper;
 import com.shimh.entity.User;
 import com.shimh.entity.UserStatus;
@@ -92,7 +92,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 //        List<UmsMember> umsMembers = memberMapper.selectByExample(example);
         User user= userService.findByAcountAndMobilePhoneNumber(username,telephone);
         if (null!=user) {
-            throw new BadCredentialsException(ResultCode.USER_HAS_EXISTED.message());
+            throw new BadCredentialsException(ResultCode.USER_HAS_EXISTED.getMessage());
 //            Asserts.fail("该用户已经存在");
         }
         //没有该用户进行添加操作

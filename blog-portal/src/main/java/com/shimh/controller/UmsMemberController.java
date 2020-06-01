@@ -1,8 +1,8 @@
 package com.shimh.controller;
 
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
-import com.shimh.common.constant.ResultCode;
 import com.shimh.common.result.Result;
 import com.shimh.entity.User;
 import com.shimh.entity.param.RegisterParam;
@@ -112,6 +112,16 @@ public class UmsMemberController {
     @LogAnnotation(module = "退出", operation = "退出")
     @ResponseBody
     public Result logout() {
+        Result r = new Result();
+        r.setResultCode(ResultCode.SUCCESS);
+        return r;
+    }
+
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @LogAnnotation(module = "获取登陆信息", operation = "退出")
+    @ResponseBody
+    public Result User() {
         Result r = new Result();
         r.setResultCode(ResultCode.SUCCESS);
         return r;

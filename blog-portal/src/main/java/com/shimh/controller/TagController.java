@@ -1,8 +1,12 @@
 package com.shimh.controller;
 
-import java.util.List;
-
+import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
+import com.shimh.common.constant.Base;
+import com.shimh.common.result.Result;
+import com.shimh.entity.Tag;
+import com.shimh.service.TagService;
+import com.shimh.vo.TagVO;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,13 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shimh.common.constant.Base;
-import com.shimh.common.constant.ResultCode;
-import com.shimh.common.result.Result;
-import com.shimh.entity.Tag;
-import com.shimh.service.TagService;
-import com.shimh.vo.CategoryVO;
-import com.shimh.vo.TagVO;
+import java.util.List;
 
 /**
  * 标签api

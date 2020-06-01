@@ -1,6 +1,7 @@
 package com.shimh.common.result;
 
-import com.shimh.common.constant.ResultCode;
+
+import com.macro.mall.common.api.ResultCode;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public class Result implements Serializable {
 
     private static final long serialVersionUID = -4762928619495260423L;
 
-    private Integer code=0;
+    private long code=0;
 
     private String msg;
 
@@ -58,8 +59,8 @@ public class Result implements Serializable {
     }
 
     public void setResultCode(ResultCode code) {
-        this.code = code.code();
-        this.msg = code.message();
+        this.code = code.getCode();
+        this.msg = code.getMessage();
     }
 
 
@@ -70,7 +71,7 @@ public class Result implements Serializable {
         return simple;
     }
 
-    public Integer getCode() {
+    public long getCode() {
         return code;
     }
 

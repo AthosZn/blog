@@ -1,7 +1,7 @@
 package com.shimh.common.controlleradvice;
 
+import com.macro.mall.common.api.ResultCode;
 import com.macro.mall.common.exception.ApiException;
-import com.shimh.common.constant.ResultCode;
 import com.shimh.common.result.ParameterInvalidItem;
 import com.shimh.common.result.Result;
 import org.apache.shiro.authz.AuthorizationException;

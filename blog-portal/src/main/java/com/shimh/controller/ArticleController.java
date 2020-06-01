@@ -2,9 +2,9 @@ package com.shimh.controller;
 
 import com.alibaba.fastjson.support.spring.annotation.FastJsonFilter;
 import com.alibaba.fastjson.support.spring.annotation.FastJsonView;
+import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
 import com.shimh.common.constant.Base;
-import com.shimh.common.constant.ResultCode;
 import com.shimh.common.result.Result;
 import com.shimh.entity.Article;
 import com.shimh.entity.ArticleBody;
