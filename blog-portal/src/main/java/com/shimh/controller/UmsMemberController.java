@@ -70,6 +70,7 @@ public class UmsMemberController {
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
+        tokenMap.put("userName",user.getAccount());
         r.setData(tokenMap);
         return r;
     }

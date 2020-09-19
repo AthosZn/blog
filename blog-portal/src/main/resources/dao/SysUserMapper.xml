@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shimh.mapper.user.SysUserMapper">
+
+	<resultMap id="BaseResultMap" type="com.shimh.entity.User">
+		<id column="id" property="id" />
+		<result column="account" property="account" />
+		<result column="admin" property="admin" />
+		<result column="avatar" property="avatar" />
+		<result column="create_date" property="createDate" />
+		<result column="deleted" property="deleted" />
+		<result column="email" property="email" />
+		<result column="last_login" property="lastLogin" />
+		<result column="mobile_phone_number" property="mobilePhoneNumber" />
+		<result column="nickname" property="nickname" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="status" property="status" />
+		<result column="friend_ask_count" property="friendAskCount" />
+		<result column="friend_count" property="friendCount" />
+	</resultMap>
+
+	<sql id="table-name">sys_user</sql>
+
+	<sql id="all-column">id ,account ,admin ,avatar ,create_date ,deleted ,email ,last_login ,mobile_phone_number ,nickname ,password ,salt ,status ,friend_ask_count ,friend_count	</sql>
+
+	<sql id="all-query-condition">
+		<if test="id != null">
+	      and id = #{id}
+    </if>
+	   <if test="account != null and account != ''">
+	      and account = #{account}
+    </if>
+		<if test="admin != null">
+	      and admin = #{admin}
+    </if>
+	   <if test="avatar != null and avatar != ''">
+	      and avatar = #{avatar}
+    </if>
+		<if test="createDate != null">
+	      and create_date = #{createDate}
+    </if>
+		<if test="deleted != null">
+	      and deleted = #{deleted}
+    </if>
+	   <if test="email != null and email != ''">
+	      and email = #{email}
+    </if>
+		<if test="lastLogin != null">
+	      and last_login = #{lastLogin}
+    </if>
+	   <if test="mobilePhoneNumber != null and mobilePhoneNumber != ''">
+	      and mobile_phone_number = #{mobilePhoneNumber}
+    </if>
+	   <if test="nickname != null and nickname != ''">
+	      and nickname = #{nickname}
+    </if>
+	   <if test="password != null and password != ''">
+	      and password = #{password}
+    </if>
+	   <if test="salt != null and salt != ''">
+	      and salt = #{salt}
+    </if>
+	   <if test="status != null and status != ''">
+	      and status = #{status}
+    </if>
+		<if test="friendAskCount != null">
+	      and friend_ask_count = #{friendAskCount}
+    </if>
+		<if test="friendCount != null">
+	      and friend_count = #{friendCount}
+    </if>
+	</sql>
+
+
+	<!-- Selective Insert-->
+	<insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.shimh.entity.User">
+		insert into <include refid="table-name"/>
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="id != null">
+	  	        id,
+  	        </if>
+	   <if test="account != null and account != ''">
+	  	        account,
+  	        </if>
+		<if test="admin != null">
+	  	        admin,
+  	        </if>
+	   <if test="avatar != null and avatar != ''">
+	  	        avatar,
+  	        </if>
+		<if test="createDate != null">
+	  	        create_date,
+  	        </if>
+		<if test="deleted != null">
+	  	        deleted,
+  	        </if>
+	   <if test="email != null and email != ''">
+	  	        email,
+  	        </if>
+		<if test="lastLogin != null">
+	  	        last_login,
+  	        </if>
+	   <if test="mobilePhoneNumber != null and mobilePhoneNumber != ''">
+	  	        mobile_phone_number,
+  	        </if>
+	   <if test="nickname != null and nickname != ''">
+	  	        nickname,
+  	        </if>
+	   <if test="password != null and password != ''">
+	  	        password,
+  	        </if>
+	   <if test="salt != null and salt != ''">
+	  	        salt,
+  	        </if>
+	   <if test="status != null and status != ''">
+	  	        status,
+  	        </if>
+		<if test="friendAskCount != null">
+	  	        friend_ask_count,
+  	        </if>
+		<if test="friendCount != null">
+	  	        friend_count
+  	        </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+ 		<if test="id != null">
+	  	        #{id},
+  	        </if>
+   	   <if test="account != null and account != ''">
+	  	        #{account},
+  	        </if>
+   		<if test="admin != null">
+	  	        #{admin},
+  	        </if>
+   	   <if test="avatar != null and avatar != ''">
+	  	        #{avatar},
+  	        </if>
+   		<if test="createDate != null">
+	  	        #{createDate},
+  	        </if>
+   		<if test="deleted != null">
+	  	        #{deleted},
+  	        </if>
+   	   <if test="email != null and email != ''">
+	  	        #{email},
+  	        </if>
+   		<if test="lastLogin != null">
+	  	        #{lastLogin},
+  	        </if>
+   	   <if test="mobilePhoneNumber != null and mobilePhoneNumber != ''">
+	  	        #{mobilePhoneNumber},
+  	        </if>
+   	   <if test="nickname != null and nickname != ''">
+	  	        #{nickname},
+  	        </if>
+   	   <if test="password != null and password != ''">
+	  	        #{password},
+  	        </if>
+   	   <if test="salt != null and salt != ''">
+	  	        #{salt},
+  	        </if>
+   	   <if test="status != null and status != ''">
+	  	        #{status},
+  	        </if>
+   		<if test="friendAskCount != null">
+	  	        #{friendAskCount},
+  	        </if>
+   		<if test="friendCount != null">
+	              #{friendCount}
+  	        </if>
+  		</trim>
+	</insert>
+
+	<!-- Batch Selective -->
+	<insert id="insertRecords" parameterType="java.util.List">
+		insert into <include refid="table-name"/>
+		<trim prefix="(" suffix=")values">
+		 	<include refid="all-column"/>
+		</trim>
+		<foreach collection="records" item="record"  separator=",">
+		  (		#{id},
+			#{account},
+			#{admin},
+			#{avatar},
+			#{createDate},
+			#{deleted},
+			#{email},
+			#{lastLogin},
+			#{mobilePhoneNumber},
+			#{nickname},
+			#{password},
+			#{salt},
+			#{status},
+			#{friendAskCount},
+			#{friendCount}
+		   )
+		</foreach>
+	</insert>
+
+	<!-- Query limit one -->
+	<select id="queryLimitOne" resultMap="BaseResultMap" parameterType="com.shimh.entity.User">
+		select <include refid="all-column" /> from <include refid="table-name"/>
+		where 1=1   <include refid="all-query-condition"/>
+        limit 1
+	</select>
+
+	<!-- Query By Cond -->
+	<select id="queryByCond" resultMap="BaseResultMap" parameterType="com.shimh.entity.User">
+		select <include refid="all-column" /> from <include refid="table-name"/>
+		where 1=1 <include refid="all-query-condition"/>
+		limit #{offset}, #{pageSize}
+	</select>
+
+	<!-- count By Cond -->
+	<select id="countByCond" resultType="int" parameterType="com.shimh.entity.User">
+		select count(1) from <include refid="table-name"/>
+		where 1=1 <include refid="all-query-condition"/>
+	</select>
+
+	<!-- Query By Primary Key -->
+	<select id="queryById" resultMap="BaseResultMap">
+		select
+		<include refid="all-column" />
+		from <include refid="table-name"/> where id = #{id}
+	</select>
+
+	<!-- Query By Primary Keys-->
+	<select id="queryByIds" resultMap="BaseResultMap" parameterType="java.util.List">
+		select
+		<include refid="all-column" />
+		from <include refid="table-name"/> where id in
+		<foreach collection="keys" item="key" open="(" close=")" separator=",">
+			#{key}
+		</foreach>
+	</select>
+
+	<!-- Update By Primary Key -->
+	<update id="updateSysUserById" parameterType="com.shimh.entity.User">
+		update <include refid="table-name" />
+		<set>
+		<if test="id != null">
+		        id = #{id},
+			</if>
+				   <if test="account != null and account != ''">
+		        account = #{account},
+			</if>
+					<if test="admin != null">
+		        admin = #{admin},
+			</if>
+				   <if test="avatar != null and avatar != ''">
+		        avatar = #{avatar},
+			</if>
+					<if test="createDate != null">
+		        create_date = #{createDate},
+			</if>
+					<if test="deleted != null">
+		        deleted = #{deleted},
+			</if>
+				   <if test="email != null and email != ''">
+		        email = #{email},
+			</if>
+					<if test="lastLogin != null">
+		        last_login = #{lastLogin},
+			</if>
+				   <if test="mobilePhoneNumber != null and mobilePhoneNumber != ''">
+		        mobile_phone_number = #{mobilePhoneNumber},
+			</if>
+				   <if test="nickname != null and nickname != ''">
+		        nickname = #{nickname},
+			</if>
+				   <if test="password != null and password != ''">
+		        password = #{password},
+			</if>
+				   <if test="salt != null and salt != ''">
+		        salt = #{salt},
+			</if>
+				   <if test="status != null and status != ''">
+		        status = #{status},
+			</if>
+					<if test="friendAskCount != null">
+		        friend_ask_count = #{friendAskCount},
+			</if>
+					<if test="friendCount != null">
+	            friend_count = #{friendCount}
+			</if>
+					</set>
+		<where>id = #{id}</where>
+	</update>
+
+	<!-- Delete By primary Keys -->
+	<delete id="deleteSysUserById">
+		delete from <include refid="table-name" />
+		<where>id = #{id}</where>
+	</delete>
+
+	<insert id="updateUserCountAll" parameterType="com.shimh.entity.User">
+		INSERT INTO <include refid="table-name" />
+		<trim prefix="(" suffix=")values">
+			<include refid="all-column"/>
+		</trim>
+		VALUES
+		(
+		#{account},
+		#{admin},
+		#{avatar},
+		#{createDate},
+		#{deleted},
+		#{email},
+		#{lastLogin},
+		#{mobilePhoneNumber},
+		#{nickname},
+		#{password},
+		#{salt},
+		#{status},
+		<choose>
+			<when test="friendAskCount != null">
+				#{friendAskCount},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="friendCount != null">
+				#{friendCount},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		ON DUPLICATE KEY UPDATE
+		friend_ask_count = friend_ask_count + VALUES(friend_ask_count),
+		friend_count = friend_count + VALUES(friend_count),
+		modified_time = VALUES(modified_time)
+	</insert>
+
+</mapper>

@@ -2,12 +2,14 @@ package com.shimh.service.impl;
 
 import com.shimh.common.util.PasswordHelper;
 import com.shimh.entity.User;
+import com.shimh.mapper.user.SysUserMapper;
 import com.shimh.repository.UserRepository;
 import com.shimh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
 
@@ -21,6 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Resource
+    private SysUserMapper sysUserMapper;
+
 
     @Override
     public List<User> findAll() {
@@ -50,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
     @Override
     @Transactional
     public Long updateUser(User user) {
@@ -57,6 +63,29 @@ public class UserServiceImpl implements UserService {
         oldUser.setNickname(user.getNickname());
 
         return oldUser.getId();
+    }
+
+    /**
+     * 清空好友请求数量
+     * @param user
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean updateUserAckCount(User user) {
+        User oldUser = userRepository.getOne(user.getId());
+        oldUser.setFriendAskCount(0);
+        return true;
+    }
+
+    /**
+     * 更新用户好友数量
+     * @param userList
+     * @return
+     */
+    @Override
+    public void updateUserCountAll(List<User> userList) {
+        sysUserMapper.updateUserCountAll(userList);
     }
 
     @Override
@@ -68,6 +97,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByAcountAndMobilePhoneNumber(String account,String mobilePhoneNumber){
         return userRepository.findByAccountAndMobilePhoneNumber(account,mobilePhoneNumber);
+    }
+
+    @Override
+    public List<User> findAllBYId(List<Long> uids){
+        return userRepository.findAllById(uids);
     }
 
 }

@@ -30,7 +30,6 @@ import java.util.Date;
 @Table(name = "sys_user")
 @JsonIgnoreProperties(value = {"handler","hibernateLazyInitializer","fieldHandler"})
 public class User  extends BaseEntity<Long> implements UserDetails {
-
     /**
      *
      */
@@ -92,6 +91,18 @@ public class User  extends BaseEntity<Long> implements UserDetails {
      */
     @Enumerated(EnumType.STRING)
     private UserStatus status = UserStatus.normal;
+
+    /**
+     * 好友请求数量
+     */
+    @Column(name = "friend_ask_count")
+    private Integer friendAskCount;
+
+    /**
+     * 好友数量
+     */
+    @Column(name = "friend_count")
+    private Integer friendCount;
 
     /**
      * 是否是管理员
@@ -229,13 +240,39 @@ public class User  extends BaseEntity<Long> implements UserDetails {
         this.lastLogin = lastLogin;
     }
 
-    @Override
-    public String toString() {
-        return "User [account=" + account + ", password=" + password + ", avatar=" + avatar + ", email=" + email
-                + ", nickname=" + nickname + ", mobilePhoneNumber=" + mobilePhoneNumber + ", salt=" + salt
-                + ", createDate=" + createDate + ", lastLogin=" + lastLogin + ", status=" + status + ", admin=" + admin
-                + ", deleted=" + deleted + "]";
+    public Integer getFriendAskCount() {
+        return friendAskCount;
     }
 
+    public void setFriendAskCount(Integer friendAskCount) {
+        this.friendAskCount = friendAskCount;
+    }
 
+    public Integer getFriendCount() {
+        return friendCount;
+    }
+
+    public void setFriendCount(Integer friendCount) {
+        this.friendCount = friendCount;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "account='" + account + '\'' +
+                ", password='" + password + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", email='" + email + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", mobilePhoneNumber='" + mobilePhoneNumber + '\'' +
+                ", salt='" + salt + '\'' +
+                ", createDate=" + createDate +
+                ", lastLogin=" + lastLogin +
+                ", status=" + status +
+                ", friendAskCount=" + friendAskCount +
+                ", friendCount=" + friendCount +
+                ", admin=" + admin +
+                ", deleted=" + deleted +
+                '}';
+    }
 }

@@ -21,7 +21,13 @@ public interface UserService {
 
     Long updateUser(User user);
 
+    boolean updateUserAckCount(User user);
+
+    void updateUserCountAll(List<User> user);
+
     void deleteUserById(Long id);
 
     User findByAcountAndMobilePhoneNumber(String account,String mobilePhoneNumber);
+
+    List<User> findAllBYId(List<Long> uids);
 }

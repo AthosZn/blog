@@ -6,7 +6,6 @@ import com.macro.mall.common.api.ResultCode;
 import com.shimh.common.annotation.LogAnnotation;
 import com.shimh.common.constant.Base;
 import com.shimh.common.result.Result;
-import com.shimh.common.util.UserUtils;
 import com.shimh.entity.User;
 import com.shimh.service.UmsMemberService;
 import com.shimh.service.UserService;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -127,12 +124,6 @@ public class UserController {
 
         r.setResultCode(ResultCode.SUCCESS);
         return r;
-    }
-
-    @PostMapping("/check_token")
-    @ResponseBody
-    public Object checkToken(@RequestParam("token") String value) {
-        return  UserUtils.getCurrentUser();
     }
 
 }

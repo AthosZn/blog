@@ -14,7 +14,7 @@ import java.io.Serializable;
  * 2018年1月23日
  */
 @MappedSuperclass
-public abstract class BaseEntity<ID extends Serializable> implements Serializable {
+public abstract class BaseEntity<ID extends Serializable> extends Page implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
